@@ -3,6 +3,11 @@ import os
 import sqlite3
 from contextlib import closing
 
+"""
+******************************************************
+~CONFIG
+******************************************************
+"""
 app = flask.Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(
@@ -10,6 +15,11 @@ app.config.update(dict(
 	DEBUG = True,
 	SECRET_KEY = 'kseurh98w5u0293gkjsnfdg8w834'))
 
+"""
+******************************************************
+~DATABASE INIT
+******************************************************
+"""
 def connect_db():
 	rv = sqlite3.connect(app.config['DATABASE'])
 	rv.row_factory = sqlite3.Row
@@ -30,3 +40,17 @@ def teardown_request(exception):
 	if hasattr(flask.g, 'db'):
 		flask.g.db.close()
 
+"""
+******************************************************
+~VIEWS
+******************************************************
+"""
+
+
+"""
+******************************************************
+~RUN APPLICATION
+******************************************************
+"""
+if __name__ == '__main__':
+	app.run()
