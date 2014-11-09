@@ -1,8 +1,8 @@
 drop table if exists class;
 create table class(
-	classid number(3) primary key,
+	classid integer primary key,
 	branch varchar(3),
-	semester number(1),
+	semester integer,
 	section varchar(1)
 	);
 
@@ -10,7 +10,7 @@ drop table if exists student;
 create table student(
 	rno varchar(20) primary key,
 	name varchar(100),
-	classid number(3) references class,
+	classid integer references class,
 	password varchar(100)
 	);
 
@@ -22,7 +22,7 @@ create table course(
 
 drop table if exists teacher;
 create table teacher(
-	teacherid varchar(20),
+	teacherid varchar(20) primary key,
 	name varchar(100),
 	password varchar(100)
 	);
@@ -30,18 +30,18 @@ create table teacher(
 #This combines the 'teaches' and 'att_total' tables
 drop table if exists attendance_course;
 create table attendance_course(
-	aid number(5) primary key,
+	aid integer primary key,
 	teacherid varchar(20) references teacher,
-	classid number(3) references class,
+	classid integer references class,
 	courseno varchar(10) references course,
-	total number(5)
+	total integer
 	);
 
 drop table if exists att_student;
 create table att_student(
-	aid number(5) references attendance_course,
+	aid integer references attendance_course,
 	rno varchar(20) references student,
-	attended number(5)
+	attended integer
 	);
 
 #For a given roll number, get attended classes and total classes for each course.

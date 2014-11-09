@@ -2,6 +2,7 @@ import flask
 import os
 import sqlite3
 from contextlib import closing
+import admin_views
 
 """
 ******************************************************
@@ -45,7 +46,7 @@ def teardown_request(exception):
 ~VIEWS
 ******************************************************
 """
-
+admin_views.register_urls(app)
 
 """
 ******************************************************
