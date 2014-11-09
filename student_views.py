@@ -7,7 +7,7 @@ from flask import render_template
 ******************************************************
 """
 
-def view_course_wise_att()
+def view_course_wise_att():
     check_login()
     run_view_course_wise_att(flask.g.db, flask.request.form)
 
