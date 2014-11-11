@@ -17,8 +17,9 @@ def create_teacher():
 def create_teacher_post():
 	check_login()
 	run_create_teacher_sql(flask.g.db, flask.request.form)
+	db.commit()
 	flask.flash('New teacher successfully created.')
-	return flask.redirect(flask.url_for('home'))
+	return redirect_to_home()
 
 #NOTE: The views for viewing and updating a teacher's info are the SAME.
 def update_teacher(teacher_id):
@@ -28,6 +29,7 @@ def update_teacher(teacher_id):
 def update_teacher_post():
 	check_login()
 	run_update_teacher_sql(flask.g.db, flask.request.form)
+	flask.g.db.commit()
 	flask.flask('Teacher info successfully updated.')
 	return redirect_to_home()
 
@@ -42,6 +44,7 @@ def create_student():
 def create_student_post():
 	check_login()
 	run_create_student_sql(flask.g.db, flask.request.form)
+	flask.g.db.commit()
 	flask.flash('New student successfully created.')
 	return redirect_to_home()
 
@@ -52,6 +55,7 @@ def update_student(student_rno):
 def update_student_post():
 	check_login()
 	run_update_student_sql(flask.g.db, flask.request.form)
+	flask.g.db.commit()
 	flask.flash('Student info successfully updated.')
 	return redirect_to_home()
 
@@ -66,6 +70,7 @@ def create_course():
 def create_course_post():
 	check_login()
 	run_create_course_sql(flask.g.db, flask.request.form)
+	flask.g.db.commit()
 	flask.flash('New course successfully created.')
 	return redirect_to_home()
 
@@ -76,12 +81,13 @@ def update_course(courseno):
 def update_course_post():
 	check_login()
 	run_update_course_sql(flask.g.db, flask.request.form)
+	flask.g.db.commit()
 	flask.flash('Course info successfully updated.')
 	return redirect_to_home()
 
 def view_course_list():
 	check_login()
-	returrn render_template('admin/view_course_list.html', course_list = get_course_list(flask.g.db))
+	return render_template('admin/view_course_list.html', course_list = get_course_list(flask.g.db))
 
 def create_class():
 	check_login()
@@ -90,6 +96,7 @@ def create_class():
 def create_class_post():
 	check_login()
 	run_create_class_sql(flask.g.db, flask.request.form)
+	flask.g.db.commit()
 	flask.flash('New class successfully created.')
 	return redirect_to_home()
 
@@ -100,6 +107,7 @@ def update_class(classid):
 def update_class_post():
 	check_login()
 	run_update_class_sql(flask.g.db, flask.request.form)
+	flask.g.db.commit()
 	flask.flash('Class successfully updated.')
 	return redirect_to_home()
 
@@ -114,6 +122,7 @@ def view_class_courses(classid):
 def view_class_courses_post():
 	check_login()
 	run_map_class_sql(flask.g.db, flask.request.form)
+	flask.g.db.commit()
 	flask.flash('Course mapping successfully created')
 	return redirect_to_home()
 
@@ -124,6 +133,7 @@ def delete_confirm(table_name, entry_key):
 def delete_post():
 	check_login()
 	run_delete_item_sql(flask.g.db, flask.request.form)
+	flask.g.db.commit()
 	flask.flash('Item successfully deleted.')
 	return redirect_to_home()
 
@@ -145,14 +155,14 @@ def register_urls(app):
 	#Teacher CRUD
 	app.add_url_rule('/admin/create/teacher/', 'create_teacher', create_teacher)
 	app.add_url_rule('/admin/create/teacher/post/', 'create_teacher_post', create_teacher_post, methods = ['POST'])
-	app.add_url_rule('/admin/teacher/<teacher_id>/', 'update_teacher', update_teacher)
+	app.add_url_rule('/admin/teacher/<teacherid>/', 'update_teacher', update_teacher)
 	app.add_url_rule('/admin/teacher/post/', 'update_teacher_post', update_teacher_post, methods = ['POST'])
 	app.add_url_rule('/admin/list/teacher/', 'view_teacher_list', view_teacher_list)
 
 	#Student CRUD
 	app.add_url_rule('/admin/create/student/', 'create_student', create_student)
 	app.add_url_rule('/admin/create/student/post/', 'create_student_post', create_student_post, methods = ['POST'])
-	app.add_url_rule('/admin/student/<student_rno>/', 'update_student', update_student)
+	app.add_url_rule('/admin/student/<rno>/', 'update_student', update_student)
 	app.add_url_rule('/admin/student/post/', 'update_student_post', update_student_post, methods = ['POST'])
 	app.add_url_rule('/admin/list/student/', 'view_student_list', view_student_list)
 
@@ -165,7 +175,7 @@ def register_urls(app):
 
 	#Class CRUD
 	app.add_url_rule('/admin/create/class/', 'create_class', create_class)
-	app.add_url_rule('/admin/create/class/post', 'create_class_post', create_class_post, methods = ['POST'])
+	app.add_url_rule('/admin/create/class/post/', 'create_class_post', create_class_post, methods = ['POST'])
 	app.add_url_rule('/admin/class/<classid>/', 'update_class', update_class)
 	app.add_url_rule('/admin/class/post/', 'update_class_post', update_class_post, methods = ['POST'])
 	app.add_url_rule('/admin/list/class/', 'view_class_list', view_class_list)
@@ -181,44 +191,58 @@ def register_urls(app):
 
 def run_create_teacher_sql(db, form):
 	db.execute('insert into teacher values (?, ?, ?)', [form['teacherid'], form['name'], form['password']])
-	db.commit()
+	
 
 def run_update_teacher_sql(db, form):
 	db.execute('update teacher set name=?, password=? where teacherid=?', [form['name'], form['password'], form['teacherid']])
-	db.commit()
+	
 
 def run_create_student_sql(db, form):
 	db.execute('insert into student values (?, ?, ?, ?)', [form['rno'], form['name'], form['classid'], form['password']])
-	db.commit()
+	insert_att_student_sql(db)
+	
 
 def run_update_student_sql(db, form):
 	db.execute('update student set name=?, password=? where rno=?', [form['name'], form['password'], form['rno']])
-	db.commit()
+	
 
 def run_create_course_sql(db, form):
 	db.execute('insert into course values (?, ?)', [form['courseno'], form['coursename']])
-	db.commit()
+	
 
 def run_update_course_sql(db, form):
 	db.execute('update course set coursename=? where courseno=?', [form['coursename'], form['courseno']])
-	db.commit()
+	
 
 def run_create_class_sql(db, form):
 	db.execute('insert into class (branch, semester, section) values (?, ?, ?)', [form['branch'], form['semester'], form['section']])
-	db.commit()
+	insert_att_student_sql(db)
+	
 
 def run_update_class_sql(db, form):
 	db.execute('update class set branch=?, semester=?, section=? where classid=?', [form['branch'], form['semester'], form['section']])
-	db.commit()
+	
 
 def run_map_class_sql(db, form):
 	db.execute('insert into attendance_course (teacherid, classid, courseno, total) values (?, ?, ?, 0)', [form['teacherid'], form['classid'], form['courseno']])
-	db.commit()
+	insert_att_student_sql(db)
+	
 
 def run_delete_item_sql(db, form):
 	key_attribute = {'class':'classid', 'student':'rno', 'course':'courseno', 'teacher':'teacherid', 'attendance_course':'aid'}
-	db.execute('delete from ? where ?=?', [form['table_name'], key_attribute, form['entry_key']])
-	db.commit()
+	db.execute('delete from ? where ?=?', [form['table_name'], key_attribute[form['table_name']], form['entry_key']])
+	
+
+def insert_att_student_sql(db):
+	statement = "insert into att_student (aid, rno) "
+				"select attendance_course.aid, student.rno "
+				"from (attendance_course inner join student "
+				"on attendance_course.classid=student.classid) "
+				"where not((aid, rno) in (select aid, rno from att_student));"
+
+	db.execute(statement)
+	statement = "update att_student set attended=0 where attended is null"
+	db.execute(statement)
 
 def get_teacher_info(db, teacherid):
 	return db.execute('select * from teacher where teacherid=?', [teacherid]).fetchall()

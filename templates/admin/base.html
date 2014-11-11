@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>AUMS</title>
+	</head>
+	<body>
+		<div id=navbar>
+			<a href="{{ url_for('view_teacher_list') }}">Teachers</a>
+			<a href="{{ url_for('view_student_list') }}">Students</a>
+			<a href="{{ url_for('view_course_list') }}">Courses</a>
+			<a href="{{ url_for('view_class_list') }}">Classes</a>
+		</div>
+
+		{% block body %}
+		<h1>Welcome admin</h1>
+		{% endblock %}
+	</body>
+</html>
