@@ -43,7 +43,7 @@ def teardown_request(exception):
 
 """
 ******************************************************
-~VIEWS
+~URLS
 ******************************************************
 """
 admin_views.register_urls(app)
