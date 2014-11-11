@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 
 {% block body %}
-<h1>Create a teacher.</h1>
 
-<form action="{{ url_for('create_teacher_post') }}" method="post">
+<form action="{{ url_for('create_student_post') }}" method="post" >
 	<dl>
-		<dt>Teacher ID:</dt>
-		<dd><input type="text" name="teacherid" /></dd>
+		<dt>Register number:</dt>
+		<dd><input type="text" name="rno" /></dd>
 		<dt>Name:</dt>
 		<dd><input type="text" name="name" /></dd>
 		<dt>Password:</dt>
 		<dd><input type="password" name="password" /></dd>
+		<dt>Class:</dt>
+		<dd>{# Drop-down to be implemented #}</dd>
 		<dd><input type="submit" value="Create" /></dd>
 	</dl>
 </form>

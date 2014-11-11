@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<form action="{{ url_for('create_class_post') }}" method="post">
+	<dl>
+		<dt>Branch:</dt>
+		<dd><input type="text" name="branch" /></dd>
+		<dt>Semester:</dt>
+		<!-- Is type="number" allowed? Find out. -->
+		<dd><input type="number" name="semester" /></dd>
+		<dt>Section:</dt>
+		<dd><input type="text" name="section" /></dd>
+		<dd><input type="submit" value="Create" /></dd>
+	</dl>
+</form>
+
+{% endblock %}
