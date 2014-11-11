@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<form action="{{ url_for('create_course_post') }}" method="post" >
+	<dl>
+		<dt>Course number:</dt>
+		<dd><input type="text" name="courseno" /></dd>
+		<dt>Course name:</dt>
+		<dd><input type="text" name="coursename" /></dd>
+	</dl>
+</form>
+
+{% endblock %}

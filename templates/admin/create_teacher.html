@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h1>Create a teacher.</h1>
+
+<form action="{{ url_for('create_teacher_post') }}" method="post">
+	<dl>
+		<dt>Teacher ID:</dt>
+		<dd><input type="text" name="teacherid" /></dd>
+		<dt>Name:</dt>
+		<dd><input type="text" name="name" /></dd>
+		<dt>Password:</dt>
+		<dd><input type="password" name="password" /></dd>
+	</dl>
+</form>
+
+{% endblock %}
