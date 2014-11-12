@@ -151,7 +151,7 @@ def delete_post():
 """
 def check_login():
 	"""
-	if not flask.session.get('logged_in'):
+	if not flask.session.get('admin_logged_in'):
 		flask.abort(401)"""
 	pass
 

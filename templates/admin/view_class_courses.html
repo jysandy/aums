@@ -13,10 +13,26 @@
 </table>
 <h3>Add a new teacher and course</h3>
 <form action="{{ url_for('view_class_courses_post') }}" method="post">
-	<input type="hidden" name="classid" value="{{ classid }}"/>
-	<input type="text" name=""/>
-	{# TODO: Add the drop-down for teachers and courses.  #}
-	<input type="submit" value="Add" />
+	<dl>
+		<dd><input type="hidden" name="classid" value="{{ classid }}"/></dd>
+		<dt>Teacher name:</dt>
+		<dd>
+			<select name="teacherid">
+				{% for row in teacher_list %}
+				<option value="{{ row.teacherid }}">{{ row.name }}</option>
+				{% endfor %}
+			</select>
+		</dd>
+		<dt>Course name:</dt>
+		<dd>
+			<select name="courseno">
+				{% for row in course_list %}
+				<option value="{{ row.courseno }}">{{ row.coursename }}</option>
+				{% endfor %}
+			</select>
+		</dd>
+		<dd><input type="submit" value="Add" /></dd>
+	</dl>
 </form>
 
 {% endblock %}
