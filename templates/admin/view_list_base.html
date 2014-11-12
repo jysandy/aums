@@ -1,11 +1,11 @@
-{% extends "base.html" %}
+{% extends "admin/base.html" %}
 
 {% block body %}
 
 <ul>
 	{% for entry in entries %}
 	<li>
-		<a href="{{ url_for(url_name, key = entry.key }}">{{ entry.title }}</a>
+		<a href="{{ url_for(update_url_name, key = entry.key) }}">{{ entry.title }}</a>
 		<a href="{{ url_for('delete_confirm', table_name=table_name, entry_key=entry.key) }}">Delete</a>
 	</li>
 	{% endfor %}

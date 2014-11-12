@@ -8,7 +8,7 @@ from flask import render_template
 """
 def home():
 	check_login()
-	return render_template('admin/home.html')
+	return render_template('admin/base.html')
 
 def create_teacher():
 	check_login()
@@ -17,7 +17,7 @@ def create_teacher():
 def create_teacher_post():
 	check_login()
 	run_create_teacher_sql(flask.g.db, flask.request.form)
-	db.commit()
+	flask.g.db.commit()
 	flask.flash('New teacher successfully created.')
 	return redirect_to_home()
 
@@ -35,8 +35,8 @@ def update_teacher_post():
 
 def view_teacher_list():
 	check_login()
-	entries = [ { 'title' : row.name, 'key' : row.teacherid } for row in get_teacher_list(flask.g.db) ]
-	return render_template('admin/view_list_base.html', entries = entries, table_name = 'teacher')
+	entries = [ { 'title' : row['name'], 'key' : row['teacherid'] } for row in get_teacher_list(flask.g.db) ]
+	return render_template('admin/view_list_base.html', entries = entries, table_name = 'teacher', update_url_name = 'update_teacher')
 
 def create_student():
 	check_login()
@@ -62,8 +62,8 @@ def update_student_post():
 
 def view_student_list():
 	check_login()
-	entries = [ { 'title' : row.name, 'key' : row.rno } for row in get_student_list(flask.g.db) ]
-	return render_template('admin/view_list_base.html', entries = get_student_list(flask.g.db), table_name = 'student')
+	entries = [ { 'title' : row['name'], 'key' : row['rno'] } for row in get_student_list(flask.g.db) ]
+	return render_template('admin/view_list_base.html', entries = get_student_list(flask.g.db), table_name = 'student', update_url_name = 'update_student')
 
 def create_course():
 	check_login()
@@ -89,8 +89,8 @@ def update_course_post():
 
 def view_course_list():
 	check_login()
-	entries = [ { 'title' : row.coursename, 'key' : row.courseno } for row in get_course_list(flask.g.db) ]
-	return render_template('admin/view_list_base.html', entries = entries, table_name = 'course')
+	entries = [ { 'title' : row['coursename'], 'key' : row['courseno'] } for row in get_course_list(flask.g.db) ]
+	return render_template('admin/view_list_base.html', entries = entries, table_name = 'course', update_url_name = 'update_course')
 
 def create_class():
 	check_login()
@@ -116,8 +116,8 @@ def update_class_post():
 
 def view_class_list():
 	check_login()
-	entries = [ { 'title' : row.semester + ' sem ' + row.branch + '-' + row.section, 'key' : row.classid } for row in get_class_list(flask.g.db) ]
-	return render_template('admin/view_list_base.html', entries = entries, table_name = 'class')
+	entries = [ { 'title' : row['semester'] + ' sem ' + row['branch'] + '-' + row['section'], 'key' : row['classid'] } for row in get_class_list(flask.g.db) ]
+	return render_template('admin/view_list_base.html', entries = entries, table_name = 'class', update_url_name = 'update_class')
 
 def view_class_courses(classid):
 	"""
@@ -150,8 +150,10 @@ def delete_post():
 ******************************************************
 """
 def check_login():
+	"""
 	if not flask.session.get('logged_in'):
-		flask.abort(401)
+		flask.abort(401)"""
+	pass
 
 def redirect_to_home():
 	return flask.redirect(flask.url_for('admin_home'))
@@ -241,11 +243,11 @@ def run_delete_item_sql(db, form):
 	
 
 def insert_att_student_sql(db):
-	statement = "insert into att_student (aid, rno) "
-				"select attendance_course.aid, student.rno "
-				"from (attendance_course inner join student "
-				"on attendance_course.classid=student.classid) "
-				"where not((aid, rno) in (select aid, rno from att_student));"
+	statement = """insert into att_student (aid, rno) 
+				select attendance_course.aid, student.rno 
+				from (attendance_course inner join student 
+				on attendance_course.classid=student.classid) 
+				where not((aid, rno) in (select aid, rno from att_student));"""
 
 	db.execute(statement)
 	statement = "update att_student set attended=0 where attended is null"
@@ -276,10 +278,10 @@ def get_class_list(db):
 	return db.execute('select * from class').fetchall()
 
 def get_course_teacher_list(db, classid):
-	query = "select aid, teacher.name, course.coursename "
-			"from attendance_course inner join course "
-			"on attendance_course.courseno=course.courseno "
-			"inner join teacher "
-			"on attendance_course.teacherid=teacher.teacherid "
-			"where classid=?;"
-	return db.execute(query, [classid]).fetchall())
+	query = """select aid, teacher.name, course.coursename 
+			from attendance_course inner join course 
+			on attendance_course.courseno=course.courseno 
+			inner join teacher 
+			on attendance_course.teacherid=teacher.teacherid 
+			where classid=?;"""
+	return db.execute(query, [classid]).fetchall()

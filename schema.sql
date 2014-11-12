@@ -27,7 +27,6 @@ create table teacher(
 	password varchar(100)
 	);
 
-#This combines the 'teaches' and 'att_total' tables
 drop table if exists attendance_course;
 create table attendance_course(
 	aid integer primary key,
@@ -44,11 +43,13 @@ create table att_student(
 	attended integer
 	);
 
-#For a given roll number, get attended classes and total classes for each course.
+drop view if exists simple_attendance;
 create view simple_attendance as 
 	select student.rno, course.coursename, att_student.attended, attendance_course.total
 	from student inner join attendance_course
 	on student.classid=attendance_course.classid
 	inner join course
 	on attendance_course.courseno=course.courseno
+	inner join att_student
+	on attendance_course.aid=att_student.aid
 
