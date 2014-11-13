@@ -10,9 +10,11 @@ def home():
 	check_login()
 	return render_template('admin/base.html')
 
+
 def create_teacher():
 	check_login()
 	return render_template('admin/create_teacher.html')
+
 
 def create_teacher_post():
 	check_login()
@@ -21,10 +23,12 @@ def create_teacher_post():
 	flask.flash('New teacher successfully created.')
 	return redirect_to_home()
 
+
 #NOTE: The views for viewing and updating a teacher's info are the SAME.
 def update_teacher(teacher_id):
 	check_login()
 	return render_template('admin/update_teacher.html', teacher_info = get_teacher_info(flask.g.db, teacher_id))
+
 
 def update_teacher_post():
 	check_login()
@@ -33,14 +37,17 @@ def update_teacher_post():
 	flask.flask('Teacher info successfully updated.')
 	return redirect_to_home()
 
+
 def view_teacher_list():
 	check_login()
 	entries = [ { 'title' : row['name'], 'key' : row['teacherid'] } for row in get_teacher_list(flask.g.db) ]
 	return render_template('admin/view_list_base.html', entries = entries, table_name = 'teacher', update_url_name = 'update_teacher')
 
+
 def create_student():
 	check_login()
-	return render_template('admin/create_student.html')
+	return render_template('admin/create_student.html', class_list = get_class_list())
+
 
 def create_student_post():
 	check_login()
@@ -49,9 +56,11 @@ def create_student_post():
 	flask.flash('New student successfully created.')
 	return redirect_to_home()
 
+
 def update_student(student_rno):
 	check_login()
 	return render_template('admin/update_student.html', student_info = get_student_info(flask.g.db, student_rno))
+
 
 def update_student_post():
 	check_login()
@@ -60,14 +69,17 @@ def update_student_post():
 	flask.flash('Student info successfully updated.')
 	return redirect_to_home()
 
+
 def view_student_list():
 	check_login()
 	entries = [ { 'title' : row['name'], 'key' : row['rno'] } for row in get_student_list(flask.g.db) ]
 	return render_template('admin/view_list_base.html', entries = get_student_list(flask.g.db), table_name = 'student', update_url_name = 'update_student')
 
+
 def create_course():
 	check_login()
 	return render_template('admin/create_course.html')
+
 
 def create_course_post():
 	check_login()
@@ -76,9 +88,11 @@ def create_course_post():
 	flask.flash('New course successfully created.')
 	return redirect_to_home()
 
+
 def update_course(courseno):
 	check_login()
 	return render_template('admin/update_course.html', course_info = get_course_info(flask.g.db, courseno))
+
 
 def update_course_post():
 	check_login()
@@ -87,14 +101,17 @@ def update_course_post():
 	flask.flash('Course info successfully updated.')
 	return redirect_to_home()
 
+
 def view_course_list():
 	check_login()
 	entries = [ { 'title' : row['coursename'], 'key' : row['courseno'] } for row in get_course_list(flask.g.db) ]
 	return render_template('admin/view_list_base.html', entries = entries, table_name = 'course', update_url_name = 'update_course')
 
+
 def create_class():
 	check_login()
 	return render_template('admin/create_class.html')
+
 
 def create_class_post():
 	check_login()
@@ -103,9 +120,11 @@ def create_class_post():
 	flask.flash('New class successfully created.')
 	return redirect_to_home()
 
+
 def update_class(classid):
 	check_login()
 	return render_template('admin/update_class.html', class_info = get_class_info(flask.g.db, classid))
+
 
 def update_class_post():
 	check_login()
@@ -114,10 +133,12 @@ def update_class_post():
 	flask.flash('Class successfully updated.')
 	return redirect_to_home()
 
+
 def view_class_list():
 	check_login()
 	entries = [ { 'title' : row['semester'] + ' sem ' + row['branch'] + '-' + row['section'], 'key' : row['classid'] } for row in get_class_list(flask.g.db) ]
 	return render_template('admin/view_list_base.html', entries = entries, table_name = 'class', update_url_name = 'update_class')
+
 
 def view_class_courses(classid):
 	"""
@@ -126,6 +147,7 @@ def view_class_courses(classid):
 	check_login()
 	return render_template('admin/view_class_courses.html', course_teacher_list = get_course_teacher_list(flask.g.db, classid), classid = classid)
 
+
 def view_class_courses_post():
 	check_login()
 	run_map_class_sql(flask.g.db, flask.request.form)
@@ -133,9 +155,11 @@ def view_class_courses_post():
 	flask.flash('Course mapping successfully created')
 	return redirect_to_home()
 
+
 def delete_confirm(table_name, entry_key):
 	check_login()
 	return render_template('admin/delete_confirm.html', table_name = table_name, entry_key = entry_key)
+
 
 def delete_post():
 	check_login()
@@ -155,8 +179,10 @@ def check_login():
 		flask.abort(401)"""
 	pass
 
+
 def redirect_to_home():
 	return flask.redirect(flask.url_for('admin_home'))
+
 
 def register_urls(app):
 	app.add_url_rule('/admin/home/', 'admin_home', home)
@@ -239,7 +265,8 @@ def run_map_class_sql(db, form):
 
 def run_delete_item_sql(db, form):
 	key_attribute = {'class':'classid', 'student':'rno', 'course':'courseno', 'teacher':'teacherid', 'attendance_course':'aid'}
-	db.execute('delete from ? where ?=?', [form['table_name'], key_attribute[form['table_name']], form['entry_key']])
+	query = "delete from " + form['table_name'] + " where " + key_attribute[form['table_name']] + "=?"
+	db.execute(query, [ form['entry_key'] ])
 	
 
 def insert_att_student_sql(db):
@@ -253,29 +280,38 @@ def insert_att_student_sql(db):
 	statement = "update att_student set attended=0 where attended is null"
 	db.execute(statement)
 
+
 def get_teacher_info(db, teacherid):
 	return db.execute('select * from teacher where teacherid=?', [teacherid]).fetchall()
+
 
 def get_teacher_list(db):
 	return db.execute('select teacherid, name from teacher').fetchall()
 
+
 def get_student_info(db, rno):
 	return db.execute('select * from student where rno=?', [rno]).fetchall()
+
 
 def get_student_list(db):
 	return db.execute('select rno, name from student').fetchall()
 
+
 def get_course_info(db, courseno):
 	return db.execute('select * from course where courseno=?', [courseno]).fetchall()
+
 
 def get_course_list(db):
 	return db.execute('select * from course').fetchall()
 
+
 def get_class_info(db, classid):
 	return db.execute('select * from class where classid=?', [classid]).fetchall()
 
+
 def get_class_list(db):
 	return db.execute('select * from class').fetchall()
+
 
 def get_course_teacher_list(db, classid):
 	query = """select aid, teacher.name, course.coursename 

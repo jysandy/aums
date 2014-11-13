@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+
+{% block body %}
+
+<form action="{{ url_for('update_teacher_post') }}" method="post">
+	<dl>
+		<dt>Name:</dt>
+		<dd><input type="text" value="{{ teacher_info.name }}" name="name" /></dd>
+		<dt>Password:</dt>
+		<dd><input type="password" value="{{ teacher_info.password }}" name="password" /></dd>
+		<dd><input type="submit" value="Submit" /></dd>
+	</dl>
+</form>
+
+{% endblock %}

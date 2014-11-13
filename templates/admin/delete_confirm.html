@@ -1,0 +1,13 @@
+{% extends "admin/base.html" %}
+
+{% block body %}
+
+<h1>Are you sure you want to delete?</h1>
+
+<form action="{{ url_for('delete_post') }}" method="post">
+	<input type="hidden" name="table_name" value="{{ table_name }}" />
+	<input type="hidden" name="entry_key" value="{{ entry_key }}" />
+	<input type="submit" value="Yes" />
+</form>
+
+{% endblock %}
