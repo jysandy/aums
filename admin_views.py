@@ -41,12 +41,12 @@ def update_teacher_post():
 def view_teacher_list():
 	check_login()
 	entries = [ { 'title' : row['name'], 'key' : row['teacherid'] } for row in get_teacher_list(flask.g.db) ]
-	return render_template('admin/view_list_base.html', entries = entries, table_name = 'teacher', update_url_name = 'update_teacher')
+	return render_template('admin/view_list_base.html', entries = entries, table_name = 'teacher', update_url_name = 'update_teacher', create_url_name = 'create_teacher')
 
 
 def create_student():
 	check_login()
-	return render_template('admin/create_student.html', class_list = get_class_list())
+	return render_template('admin/create_student.html', class_list = get_class_list(flask.g.db))
 
 
 def create_student_post():
@@ -73,7 +73,8 @@ def update_student_post():
 def view_student_list():
 	check_login()
 	entries = [ { 'title' : row['name'], 'key' : row['rno'] } for row in get_student_list(flask.g.db) ]
-	return render_template('admin/view_list_base.html', entries = get_student_list(flask.g.db), table_name = 'student', update_url_name = 'update_student')
+	return render_template('admin/view_list_base.html', entries = get_student_list(flask.g.db), table_name = 'student', 
+			update_url_name = 'update_student', create_url_name = 'create_student')
 
 
 def create_course():
@@ -105,7 +106,8 @@ def update_course_post():
 def view_course_list():
 	check_login()
 	entries = [ { 'title' : row['coursename'], 'key' : row['courseno'] } for row in get_course_list(flask.g.db) ]
-	return render_template('admin/view_list_base.html', entries = entries, table_name = 'course', update_url_name = 'update_course')
+	return render_template('admin/view_list_base.html', entries = entries, table_name = 'course', update_url_name = 'update_course',
+			create_url_name = 'create_course')
 
 
 def create_class():
@@ -136,8 +138,9 @@ def update_class_post():
 
 def view_class_list():
 	check_login()
-	entries = [ { 'title' : row['semester'] + ' sem ' + row['branch'] + '-' + row['section'], 'key' : row['classid'] } for row in get_class_list(flask.g.db) ]
-	return render_template('admin/view_list_base.html', entries = entries, table_name = 'class', update_url_name = 'update_class')
+	entries = [ { 'title' : str(row['semester']) + ' sem ' + row['branch'] + '-' + row['section'], 'key' : str(row['classid']) } for row in get_class_list(flask.g.db) ]
+	return render_template('admin/view_list_base.html', entries = entries, table_name = 'class', update_url_name = 'update_class',
+			create_url_name = 'create_class')
 
 
 def view_class_courses(classid):
@@ -274,7 +277,8 @@ def insert_att_student_sql(db):
 				select attendance_course.aid, student.rno 
 				from (attendance_course inner join student 
 				on attendance_course.classid=student.classid) 
-				where not((aid, rno) in (select aid, rno from att_student));"""
+				where not aid in (select aid from att_student)
+				and not rno in (select rno from att_student);"""
 
 	db.execute(statement)
 	statement = "update att_student set attended=0 where attended is null"
@@ -310,7 +314,9 @@ def get_class_info(db, classid):
 
 
 def get_class_list(db):
-	return db.execute('select * from class').fetchall()
+	rows = db.execute('select * from class').fetchall()
+	new_rows = [zip(row.keys(), [str(x) for x in row]) for row in rows]
+	return new_rows
 
 
 def get_course_teacher_list(db, classid):

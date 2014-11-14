@@ -4,6 +4,7 @@
 
 <form action="{{ url_for('update_course_post') }}" method="post">
 	<dl>
+		<input type="hidden" value="{{ course_info.courseno }}" />
 		<dt>Name:</dt>
 		<dd><input type="text" value="{{ course_info.coursename }}" name="name" /></dd>
 		<dd><input type="submit" value="Submit" /></dd>

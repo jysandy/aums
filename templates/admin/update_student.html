@@ -4,6 +4,7 @@
 
 <form action="{{ url_for('update_student_post') }}" method="post">
 	<dl>
+		<input type="hidden" value="{{ student_info.rno }}" />
 		<dt>Name:</dt>
 		<dd><input type="text" value="{{ student_info.name }}" name="name"/></dd>
 		<dt>Password:</dt>
