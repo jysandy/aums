@@ -1,0 +1,19 @@
+{% extends "admin/base.html" %}
+
+{% block body %}
+
+<form action="{{ url_for('update_class_post') }}" method="post">
+	<dl>
+		<dd><input type="hidden" name="classid" value="{{ class_info.classid }}" /></dd>
+		<dt>Branch:</dt>
+		<dd><input type="text" name="branch" value="{{ class_info.branch }}" /></dd>
+		<dt>Semester:</dt>
+		<dd><input type="number" name="semester" value="{{ class_info.semester }}" /></dd>
+		<dt>Section:</dt>
+		<dd><input type="text" name="section" value="{{ class_info.section }}" /></dd>
+		<dd><input type="submit" value="Save" /></dd>
+	</dl>
+</form>
+
+<a href="{{ url_for('view_class_courses', key=class_info.classid) }}">Assign courses and teachers</a>
+{% endblock %}

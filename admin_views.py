@@ -57,9 +57,11 @@ def create_student_post():
 	return redirect_to_home()
 
 
-def update_student(student_rno):
+def update_student(key):
 	check_login()
-	return render_template('admin/update_student.html', student_info = get_student_info(flask.g.db, student_rno))
+	print key
+	print get_student_info(flask.g.db, key)
+	return render_template('admin/update_student.html', student_info = get_student_info(flask.g.db, key))
 
 
 def update_student_post():
@@ -74,7 +76,7 @@ def view_student_list():
 	check_login()
 	entries = [ { 'title' : row['name'], 'key' : row['rno'] } for row in get_student_list(flask.g.db) ]
 	print entries
-	return render_template('admin/view_list_base.html', entries = get_student_list(flask.g.db), table_name = 'student', 
+	return render_template('admin/view_list_base.html', entries = entries, table_name = 'student', 
 			update_url_name = 'update_student', create_url_name = 'create_student')
 
 
@@ -91,9 +93,9 @@ def create_course_post():
 	return redirect_to_home()
 
 
-def update_course(courseno):
+def update_course(key):
 	check_login()
-	return render_template('admin/update_course.html', course_info = get_course_info(flask.g.db, courseno))
+	return render_template('admin/update_course.html', course_info = get_course_info(flask.g.db, key))
 
 
 def update_course_post():
@@ -124,9 +126,9 @@ def create_class_post():
 	return redirect_to_home()
 
 
-def update_class(classid):
+def update_class(key):
 	check_login()
-	return render_template('admin/update_class.html', class_info = get_class_info(flask.g.db, classid))
+	return render_template('admin/update_class.html', class_info = get_class_info(flask.g.db, key))
 
 
 def update_class_post():
@@ -144,12 +146,13 @@ def view_class_list():
 			create_url_name = 'create_class')
 
 
-def view_class_courses(classid):
+def view_class_courses(key):
 	"""
 	List of courses for each class. Contains a small form at the end to add a new course.
 	"""
 	check_login()
-	return render_template('admin/view_class_courses.html', course_teacher_list = get_course_teacher_list(flask.g.db, classid), classid = classid)
+	return render_template('admin/view_class_courses.html', course_teacher_list = get_course_teacher_list(flask.g.db, key), classid = key,
+			teacher_list = get_teacher_list(flask.g.db), course_list = get_course_list(flask.g.db))
 
 
 def view_class_courses_post():
@@ -221,7 +224,7 @@ def register_urls(app):
 
 	#Attendance_course
 	app.add_url_rule('/admin/class/<key>/courses/', 'view_class_courses', view_class_courses)
-	app.add_url_rule('/admin/class/courses_map/post/', 'view_class_courses_post', view_class_courses_post)
+	app.add_url_rule('/admin/class/courses_map/post/', 'view_class_courses_post', view_class_courses_post, methods = ['POST'])
 
 	#Deletion
 	app.add_url_rule('/admin/delete/<table_name>/<entry_key>/', 'delete_confirm', delete_confirm)
@@ -259,7 +262,7 @@ def run_create_class_sql(db, form):
 	
 
 def run_update_class_sql(db, form):
-	db.execute('update class set branch=?, semester=?, section=? where classid=?', [form['branch'], form['semester'], form['section']])
+	db.execute('update class set branch=?, semester=?, section=? where classid=?', [form['branch'], form['semester'], form['section'], form['classid']])
 	
 
 def run_map_class_sql(db, form):
@@ -287,7 +290,7 @@ def insert_att_student_sql(db):
 
 
 def get_teacher_info(db, teacherid):
-	return rows_to_stringdicts(db.execute('select * from teacher where teacherid=?', [teacherid]).fetchall())
+	return rows_to_stringdicts(db.execute('select * from teacher where teacherid=?', [teacherid]).fetchall())[0]
 
 
 def get_teacher_list(db):
@@ -295,15 +298,15 @@ def get_teacher_list(db):
 
 
 def get_student_info(db, rno):
-	return rows_to_stringdicts(db.execute('select * from student where rno=?', [rno]).fetchall())
+	return rows_to_stringdicts(db.execute('select * from student where rno=?', [rno]).fetchall())[0]
 
 
 def get_student_list(db):
-	return rows_to_stringdicts(db.execute('select rno, name from student').fetchall())
+	return rows_to_stringdicts(db.execute('select * from student').fetchall())
 
 
 def get_course_info(db, courseno):
-	return rows_to_stringdicts(db.execute('select * from course where courseno=?', [courseno]).fetchall())
+	return rows_to_stringdicts(db.execute('select * from course where courseno=?', [courseno]).fetchall())[0]
 
 
 def get_course_list(db):
@@ -311,7 +314,7 @@ def get_course_list(db):
 
 
 def get_class_info(db, classid):
-	return rows_to_stringdicts(db.execute('select * from class where classid=?', [classid]).fetchall())
+	return rows_to_stringdicts(db.execute('select * from class where classid=?', [classid]).fetchall())[0]
 
 
 def get_class_list(db):
