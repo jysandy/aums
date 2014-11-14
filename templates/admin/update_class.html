@@ -1,19 +1,28 @@
-{% extends "admin/base.html" %}
+{% extends "admin/form.html" %}
 
-{% block body %}
+{% block form %}
 
-<form action="{{ url_for('update_class_post') }}" method="post">
-	<dl>
-		<dd><input type="hidden" name="classid" value="{{ class_info.classid }}" /></dd>
-		<dt>Branch:</dt>
-		<dd><input type="text" name="branch" value="{{ class_info.branch }}" /></dd>
-		<dt>Semester:</dt>
-		<dd><input type="number" name="semester" value="{{ class_info.semester }}" /></dd>
-		<dt>Section:</dt>
-		<dd><input type="text" name="section" value="{{ class_info.section }}" /></dd>
-		<dd><input type="submit" value="Save" /></dd>
-	</dl>
+<form action="{{ url_for('update_class_post') }}" method="post" role="form">
+	<input type="hidden" name="classid" value="{{ class_info.classid }}" >
+	
+	<div class="form-group">
+		<label for="branch">Branch:</label>
+		<input type="text" name="branch" value="{{ class_info.branch }}" id="branch" class="form-control">
+	</div>
+
+	<div class="form-group">
+		<label for="semester">Semester:</label>
+		<input type="number" name="semester" value="{{ class_info.semester }}" id="semester" class="form-control">
+	</div>
+
+	<div class="form-group">
+		<label for="section">Section:</label>
+		<input type="text" name="section" value="{{ class_info.section }}" id="section" class="form-control">
+	</div>
+
+	<button type="submit" class="btn btn-default">Save</button>
 </form>
 
 <a href="{{ url_for('view_class_courses', key=class_info.classid) }}">Assign courses and teachers</a>
+
 {% endblock %}

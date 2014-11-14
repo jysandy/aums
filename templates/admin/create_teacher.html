@@ -1,18 +1,24 @@
-{% extends "admin/base.html" %}
+{% extends "admin/form.html" %}
 
-{% block body %}
-<h1>Create a teacher.</h1>
+{% block form %}
 
-<form action="{{ url_for('create_teacher_post') }}" method="post">
-	<dl>
-		<dt>Teacher ID:</dt>
-		<dd><input type="text" name="teacherid" /></dd>
-		<dt>Name:</dt>
-		<dd><input type="text" name="name" /></dd>
-		<dt>Password:</dt>
-		<dd><input type="password" name="password" /></dd>
-		<dd><input type="submit" value="Create" /></dd>
-	</dl>
+<form action="{{ url_for('create_teacher_post') }}" method="post" role="form">
+	<div class="form-group">
+		<label for="teacherid">Teacher ID:</label>
+		<input type="text" name="teacherid" id="label" class="form-control">
+	</div>
+
+	<div class="form-group">	
+		<label for="name">Name:</label>
+		<input type="text" name="name" id="label" class="form-control">
+	</div>
+
+	<div class="form-group">
+		<label for="password">Password:</label>
+		<input type="password" name="password" id="label" class="form-control">
+	</div>
+
+	<button type="submit" class="btn btn-default">Create</button>
 </form>
 
 {% endblock %}

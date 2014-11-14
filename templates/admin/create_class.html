@@ -1,17 +1,24 @@
-{% extends "admin/base.html" %}
+{% extends "admin/form.html" %}
 
-{% block body %}
+{% block form %}
 
-<form action="{{ url_for('create_class_post') }}" method="post">
-	<dl>
-		<dt>Branch:</dt>
-		<dd><input type="text" name="branch" /></dd>
-		<dt>Semester:</dt>
-		<dd><input type="number" name="semester" min="1" max="8" /></dd>
-		<dt>Section:</dt>
-		<dd><input type="text" name="section" /></dd>
-		<dd><input type="submit" value="Create" /></dd>
-	</dl>
+<form action="{{ url_for('create_class_post') }}" method="post" role="form">
+	<div class="form-group">
+		<label for="branch">Branch:</label>
+		<input type="text" name="branch" id="branch" class="form-control">
+	</div>
+
+	<div class="form-group">
+		<label for="semester">Semester:</label>
+		<input type="number" name="semester" min="1" max="8" id="semester" class="form-control">
+	</div>
+
+	<div class="form-group">	
+		<label for="section">Section:</label>
+		<input type="text" name="section" id="section" class="form-control">
+	</div>
+
+	<button type="submit" class="btn btn-default">Create</button>
 </form>
 
 {% endblock %}

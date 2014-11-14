@@ -25,9 +25,9 @@ def create_teacher_post():
 
 
 #NOTE: The views for viewing and updating a teacher's info are the SAME.
-def update_teacher(teacher_id):
+def update_teacher(key):
 	check_login()
-	return render_template('admin/update_teacher.html', teacher_info = get_teacher_info(flask.g.db, teacher_id))
+	return render_template('admin/update_teacher.html', teacher_info = get_teacher_info(flask.g.db, key))
 
 
 def update_teacher_post():
