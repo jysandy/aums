@@ -73,6 +73,7 @@ def update_student_post():
 def view_student_list():
 	check_login()
 	entries = [ { 'title' : row['name'], 'key' : row['rno'] } for row in get_student_list(flask.g.db) ]
+	print entries
 	return render_template('admin/view_list_base.html', entries = get_student_list(flask.g.db), table_name = 'student', 
 			update_url_name = 'update_student', create_url_name = 'create_student')
 
@@ -286,36 +287,40 @@ def insert_att_student_sql(db):
 
 
 def get_teacher_info(db, teacherid):
-	return db.execute('select * from teacher where teacherid=?', [teacherid]).fetchall()
+	return rows_to_stringdicts(db.execute('select * from teacher where teacherid=?', [teacherid]).fetchall())
 
 
 def get_teacher_list(db):
-	return db.execute('select teacherid, name from teacher').fetchall()
+	return rows_to_stringdicts(db.execute('select teacherid, name from teacher').fetchall())
 
 
 def get_student_info(db, rno):
-	return db.execute('select * from student where rno=?', [rno]).fetchall()
+	return rows_to_stringdicts(db.execute('select * from student where rno=?', [rno]).fetchall())
 
 
 def get_student_list(db):
-	return db.execute('select rno, name from student').fetchall()
+	return rows_to_stringdicts(db.execute('select rno, name from student').fetchall())
 
 
 def get_course_info(db, courseno):
-	return db.execute('select * from course where courseno=?', [courseno]).fetchall()
+	return rows_to_stringdicts(db.execute('select * from course where courseno=?', [courseno]).fetchall())
 
 
 def get_course_list(db):
-	return db.execute('select * from course').fetchall()
+	return rows_to_stringdicts(db.execute('select * from course').fetchall())
 
 
 def get_class_info(db, classid):
-	return db.execute('select * from class where classid=?', [classid]).fetchall()
+	return rows_to_stringdicts(db.execute('select * from class where classid=?', [classid]).fetchall())
 
 
 def get_class_list(db):
 	rows = db.execute('select * from class').fetchall()
-	new_rows = [zip(row.keys(), [str(x) for x in row]) for row in rows]
+	return rows_to_stringdicts(rows)
+
+
+def rows_to_stringdicts(rows):
+	new_rows = [dict(zip(row.keys(), [str(x) for x in row])) for row in rows]
 	return new_rows
 
 
@@ -326,4 +331,4 @@ def get_course_teacher_list(db, classid):
 			inner join teacher 
 			on attendance_course.teacherid=teacher.teacherid 
 			where classid=?;"""
-	return db.execute(query, [classid]).fetchall()
+	return rows_to_stringdicts(db.execute(query, [classid]).fetchall())
