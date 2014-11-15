@@ -1,5 +1,5 @@
 import flask
-from flask import render_template
+from flask import render_template, redirect, url_for, request
 
 """
 ******************************************************
@@ -55,13 +55,11 @@ def create_student_post():
 	run_create_student_sql(flask.g.db, flask.request.form)
 	flask.g.db.commit()
 	flask.flash('New student successfully created.')
-	return redirect_to_home()
+	return redirect(url_for('create_student'))
 
 
 def update_student(key):
 	check_login()
-	print key
-	print get_student_info(flask.g.db, key)
 	return render_template('admin/update_student.html', student_info = get_student_info(flask.g.db, key))
 
 
@@ -70,7 +68,7 @@ def update_student_post():
 	run_update_student_sql(flask.g.db, flask.request.form)
 	flask.g.db.commit()
 	flask.flash('Student info successfully updated.')
-	return redirect_to_home()
+	return redirect(url_for('update_student', key=flask.request.form['rno']))
 
 
 def view_student_list():
@@ -91,7 +89,7 @@ def create_course_post():
 	run_create_course_sql(flask.g.db, flask.request.form)
 	flask.g.db.commit()
 	flask.flash('New course successfully created.')
-	return redirect_to_home()
+	return redirect(url_for('create_course'))
 
 
 def update_course(key):
@@ -104,7 +102,7 @@ def update_course_post():
 	run_update_course_sql(flask.g.db, flask.request.form)
 	flask.g.db.commit()
 	flask.flash('Course info successfully updated.')
-	return redirect_to_home()
+	return redirect(url_for('update_course', key=flask.request.form['courseno']))
 
 
 def view_course_list():
@@ -124,7 +122,7 @@ def create_class_post():
 	run_create_class_sql(flask.g.db, flask.request.form)
 	flask.g.db.commit()
 	flask.flash('New class successfully created.')
-	return redirect_to_home()
+	return redirect(url_for('create_class'))
 
 
 def update_class(key):
@@ -137,7 +135,7 @@ def update_class_post():
 	run_update_class_sql(flask.g.db, flask.request.form)
 	flask.g.db.commit()
 	flask.flash('Class successfully updated.')
-	return redirect_to_home()
+	return redirect(url_for('update_class', key = flask.request.form['classid']))
 
 
 def view_class_list():
@@ -161,7 +159,7 @@ def view_class_courses_post():
 	run_map_class_sql(flask.g.db, flask.request.form)
 	flask.g.db.commit()
 	flask.flash('Course mapping successfully created')
-	return redirect_to_home()
+	return redirect(url_for('view_class_courses', key = flask.request.form['classid']))
 
 
 def delete_confirm(table_name, entry_key):
@@ -174,7 +172,7 @@ def delete_post():
 	run_delete_item_sql(flask.g.db, flask.request.form)
 	flask.g.db.commit()
 	flask.flash('Item successfully deleted.')
-	return redirect_to_home()
+	return redirect(request.args['redirect_path'])
 
 """
 ******************************************************

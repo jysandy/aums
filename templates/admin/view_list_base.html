@@ -17,7 +17,7 @@
 						<a href="{{ url_for(update_url_name, key=entry.key) }}" class="btn btn-link">{{ entry.title }}</a>
 					</td>
 					<td class="col-sm-2">
-						<a href="{{ url_for('delete_confirm', table_name=table_name, entry_key=entry.key) }}" class="btn btn-primary">
+						<a href="{{ url_for('delete_confirm', table_name=table_name, entry_key=entry.key, redirect_path=request.path) }}" class="btn btn-primary">
 							<span class="glyphicon glyphicon-trash"></span>
 							Delete
 						</a>
