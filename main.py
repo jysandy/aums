@@ -62,7 +62,7 @@ def root():
 	return redirect(url_for('login'))
 
 
-@app.route('/login/')
+@app.route('/login/', methods = ['GET', 'POST'])
 def login():
 	if request.method == 'POST':
 		if is_admin(request.form):
@@ -80,7 +80,7 @@ def login():
 	return render_template('login.html')
 
 
-@app.route('/logout/', methods = ['POST'])
+@app.route('/logout/')
 def logout():
 	session.clear()
 	return redirect(url_for('login'))
@@ -91,12 +91,12 @@ def is_admin(form):
 
 
 def is_teacher(form):
-	rows = g.db.execute('select * from teacher where teacherid=? and password=?', [ form['username'], form['password'] ])
+	rows = g.db.execute('select * from teacher where teacherid=? and password=?', [ form['username'], form['password'] ]).fetchall()
 	return len(rows) == 1
 
 
 def is_student(form):
-	rows = g.db.execute('select * from student where rno=? and password=?', [ form['username'], form['password'] ])
+	rows = g.db.execute('select * from student where rno=? and password=?', [ form['username'], form['password'] ]).fetchall()
 	return len(rows) == 1
 
 """

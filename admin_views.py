@@ -182,10 +182,8 @@ def delete_post():
 ******************************************************
 """
 def check_login():
-	"""
 	if not flask.session.get('admin_logged_in'):
-		flask.abort(401)"""
-	pass
+		flask.abort(401)
 
 
 def redirect_to_home():
