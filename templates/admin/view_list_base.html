@@ -1,16 +1,34 @@
 {% extends "admin/base.html" %}
+{% set active_page = active_page -%}
+
+{% block heading %}
+<h1>View and create.</h1>
+{% endblock %}
 
 {% block body %}
 
-<ul>
-	{% for entry in entries %}
-	<li>
-		<a href="{{ url_for(update_url_name, key=entry.key) }}">{{ entry.title }}</a>
-		<a href="{{ url_for('delete_confirm', table_name=table_name, entry_key=entry.key) }}">Delete</a>
-	</li>
-	{% endfor %}
-</ul>
+<div class="row">
+	<div class="col-sm-5">
+		<table class="table table-striped table-bordered table-hover table-condensed">
+			<tbody>
+				{% for entry in entries %}
+				<tr>
+					<td class="col-sm-9">
+						<a href="{{ url_for(update_url_name, key=entry.key) }}" class="btn btn-link">{{ entry.title }}</a>
+					</td>
+					<td class="col-sm-3">
+						<a href="{{ url_for('delete_confirm', table_name=table_name, entry_key=entry.key) }}" class="btn btn-default">
+							<span class="glyphicon glyphicon-trash"></span>
+							Delete
+						</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
 
-<a href="{{ url_for(create_url_name) }}">Create new</a>
+<a href="{{ url_for(create_url_name) }}" class="btn btn-default">Create new</a>
 
 {% endblock %}

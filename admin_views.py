@@ -41,7 +41,8 @@ def update_teacher_post():
 def view_teacher_list():
 	check_login()
 	entries = [ { 'title' : row['name'], 'key' : row['teacherid'] } for row in get_teacher_list(flask.g.db) ]
-	return render_template('admin/view_list_base.html', entries = entries, table_name = 'teacher', update_url_name = 'update_teacher', create_url_name = 'create_teacher')
+	return render_template('admin/view_list_base.html', entries = entries, table_name = 'teacher', update_url_name = 'update_teacher', 
+		create_url_name = 'create_teacher', active_page='view_teacher_list')
 
 
 def create_student():
@@ -77,7 +78,7 @@ def view_student_list():
 	entries = [ { 'title' : row['name'], 'key' : row['rno'] } for row in get_student_list(flask.g.db) ]
 	print entries
 	return render_template('admin/view_list_base.html', entries = entries, table_name = 'student', 
-			update_url_name = 'update_student', create_url_name = 'create_student')
+			update_url_name = 'update_student', create_url_name = 'create_student', active_page = 'view_student_list')
 
 
 def create_course():
@@ -110,7 +111,7 @@ def view_course_list():
 	check_login()
 	entries = [ { 'title' : row['coursename'], 'key' : row['courseno'] } for row in get_course_list(flask.g.db) ]
 	return render_template('admin/view_list_base.html', entries = entries, table_name = 'course', update_url_name = 'update_course',
-			create_url_name = 'create_course')
+			create_url_name = 'create_course', active_page = 'view_course_list')
 
 
 def create_class():
@@ -143,7 +144,7 @@ def view_class_list():
 	check_login()
 	entries = [ { 'title' : str(row['semester']) + ' sem ' + row['branch'] + '-' + row['section'], 'key' : str(row['classid']) } for row in get_class_list(flask.g.db) ]
 	return render_template('admin/view_list_base.html', entries = entries, table_name = 'class', update_url_name = 'update_class',
-			create_url_name = 'create_class')
+			create_url_name = 'create_class', active_page = 'view_class_list')
 
 
 def view_class_courses(key):
