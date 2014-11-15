@@ -19,9 +19,14 @@
 			<tbody>
 				{% for row in course_teacher_list %}
 				<tr>
-					<td>{{ row.coursename }}</td>
-					<td>{{ row.name }}</td>
-					<td><a href="{{ url_for('delete_confirm', table_name='attendance_course', entry_key=row.aid) }}" class="btn btn-default">Delete</a></td>
+					<td class="col-sm-5">{{ row.coursename }}</td>
+					<td class="col-sm-5">{{ row.name }}</td>
+					<td class="col-sm-2">
+						<a href="{{ url_for('delete_confirm', table_name='attendance_course', entry_key=row.aid) }}" class="btn btn-default">
+							<span class="glyphicon glyphicon-trash"></span>
+							Delete
+						</a>
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -56,7 +61,10 @@
 				</select>
 			</div>
 
-			<button type="submit" class="btn btn-default">Add</button>
+			<button type="submit" class="btn btn-default">
+				<span class="glyphicon glyphicon-plus"></span>
+				Add
+			</button>
 		</form>
 	</div>
 
