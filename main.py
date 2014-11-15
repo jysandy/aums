@@ -64,6 +64,7 @@ def root():
 
 @app.route('/login/', methods = ['GET', 'POST'])
 def login():
+	session.clear()
 	if request.method == 'POST':
 		if is_admin(request.form):
 			session['admin_logged_in'] = True
