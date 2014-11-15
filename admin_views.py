@@ -34,8 +34,8 @@ def update_teacher_post():
 	check_login()
 	run_update_teacher_sql(flask.g.db, flask.request.form)
 	flask.g.db.commit()
-	flask.flask('Teacher info successfully updated.')
-	return redirect_to_home()
+	flask.flash('Teacher info successfully updated.')
+	return redirect(url_for('update_teacher', key = request.form['teacherid']))
 
 
 def view_teacher_list():

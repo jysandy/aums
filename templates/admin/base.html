@@ -33,6 +33,11 @@
 	</div>
 </nav>
 
+
+{% for message in get_flashed_messages() %}
+<p class="well well-sm">{{ message }}</p>
+{% endfor %}
+
 <div class="container-fluid">
 	{% block heading %}
 	<div class="row">
