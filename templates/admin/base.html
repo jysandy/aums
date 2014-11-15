@@ -1,44 +1,42 @@
-<!DOCTYPE HTML>
+{% extends "base.html" %}
 
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-		<title>AUMS</title>
-	</head>
-	<body>
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="{{ url_for('admin_home') }}">AUMS</a>
-				</div>
-				<div>
-					{% set navigation_bar = [
-						(url_for('view_teacher_list'), 'view_teacher_list', 'Teachers'),
-						(url_for('view_student_list'), 'view_student_list', 'Students'),
-						(url_for('view_course_list'), 'view_course_list', 'Courses'),
-						(url_for('view_class_list'), 'view_class_list', 'Classes')
-					] -%}
-					{% set active_page = active_page|default('admin_home') -%}
-					<ul class="nav navbar-nav">
-						{% for href, endpoint, caption in navigation_bar %}
-						<li {% if endpoint == active_page %} class="active" {% endif %}>
-							<a href="{{ href|e }}">{{ caption|e }}</a>
-						</li>
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-		</nav>
-
-		<div class="container-fluid">
-			{% block heading %}
-			<h1>Welcome admin</h1>
-			{% endblock %}
-			
-			{% block body %}
-			{% endblock %}
+{% block sub %}
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="{{ url_for('admin_home') }}">AUMS</a>
 		</div>
-	</body>
-</html>
+		<div>
+			{% set navigation_bar = [
+				(url_for('view_teacher_list'), 'view_teacher_list', 'Teachers'),
+				(url_for('view_student_list'), 'view_student_list', 'Students'),
+				(url_for('view_course_list'), 'view_course_list', 'Courses'),
+				(url_for('view_class_list'), 'view_class_list', 'Classes')
+			] -%}
+			{% set active_page = active_page|default('admin_home') -%}
+			<ul class="nav navbar-nav">
+				{% for href, endpoint, caption in navigation_bar %}
+				<li {% if endpoint == active_page %} class="active" {% endif %}>
+					<a href="{{ href|e }}">{{ caption|e }}</a>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<div class="container-fluid">
+	{% block heading %}
+	<div class="row">
+		<div class="col-sm-7">
+			<div class="jumbotron">
+				<h1>Welcome admin</h1>
+			</div>
+		</div>
+	</div>
+	{% endblock %}
+
+	{% block body %}
+	{% endblock %}
+</div>
+{% endblock %}
