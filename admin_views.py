@@ -8,7 +8,7 @@ from flask import render_template, redirect, url_for, request
 """
 def home():
 	check_login()
-	return render_template('admin/base.html')
+	return render_template('admin/home.html')
 
 
 def create_teacher():

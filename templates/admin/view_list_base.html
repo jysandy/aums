@@ -14,7 +14,10 @@
 				{% for entry in entries %}
 				<tr>
 					<td class="col-sm-10">
-						<a href="{{ url_for(update_url_name, key=entry.key) }}" class="btn btn-link">{{ entry.title }}</a>
+						<a href="{{ url_for(update_url_name, key=entry.key) }}" class="btn btn-link" data-toggle="tooltip"
+						data-placement="right" title="Change details">
+							{{ entry.title }}
+						</a>
 					</td>
 					<td class="col-sm-2">
 						<a href="{{ url_for('delete_confirm', table_name=table_name, entry_key=entry.key, redirect_path=request.path) }}" class="btn btn-primary">
