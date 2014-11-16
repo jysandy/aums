@@ -11,7 +11,7 @@ from util import rows_to_stringdicts
 
 def home():
     check_login()
-    return render_template('student/student_home.html', student_attendance_list = get_course_wise_att(flask.g.db, flask.request.form), student_name = get_student_name(flask.g.db, flask.request.form))
+    return render_template('student/home.html', student_attendance_list = get_course_wise_att(flask.g.db, flask.request.form), student_name = get_student_name(flask.g.db, flask.request.form))
 
 """
 ******************************************************
