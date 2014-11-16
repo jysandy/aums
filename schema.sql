@@ -45,7 +45,7 @@ create table att_student(
 
 drop view if exists simple_attendance;
 create view simple_attendance as 
-	select student.rno, course.coursename, course.courseno att_student.attended, attendance_course.total
+	select student.rno, course.coursename, course.courseno, att_student.attended, attendance_course.total
 	from student inner join attendance_course
 	on student.classid=attendance_course.classid
 	inner join course
