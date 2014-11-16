@@ -31,4 +31,4 @@ def register_urls(app):
 	app.add_url_rule('/student/home/', 'student_home', home)
 
 def get_course_wise_att(db, form):
-	return rows_to_stringdicts(db.execute('select * from simple_attendance where student.rno=?', flask.session.get('rno'))
+	return rows_to_stringdicts(db.execute('select * from simple_attendance where student.rno=?', flask.session.get('rno')))
