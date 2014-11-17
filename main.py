@@ -108,4 +108,6 @@ def is_student(form):
 ******************************************************
 """
 if __name__ == '__main__':
+	if not os.path.isfile(app.config['DATABASE']):
+		init_db()
 	app.run()
