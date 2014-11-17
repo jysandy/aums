@@ -1,0 +1,3 @@
+update attendance_course set total=total+1 where teacherid=? and classid=? and courseno=?
+
+update att_student set attended=attended+1 where rno=? and aid=(select aid from attendance_course where teacherid=? and classid=? and courseno=?)
