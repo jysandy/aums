@@ -1,5 +1,6 @@
 import flask
 from flask import render_template, redirect, url_for, request
+from util import rows_to_stringdicts
 
 """
 ******************************************************
@@ -318,11 +319,11 @@ def get_class_list(db):
 	rows = db.execute('select * from class').fetchall()
 	return rows_to_stringdicts(rows)
 
-
+"""
 def rows_to_stringdicts(rows):
 	new_rows = [dict(zip(row.keys(), [str(x) for x in row])) for row in rows]
 	return new_rows
-
+"""
 
 def get_course_teacher_list(db, classid):
 	query = """select aid, teacher.name, course.coursename 
