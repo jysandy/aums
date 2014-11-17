@@ -4,6 +4,7 @@ import sqlite3
 from contextlib import closing
 import admin_views
 import student_views
+import teacher_views
 from flask import request, render_template, url_for, redirect, session, g
 
 """
@@ -52,6 +53,7 @@ def teardown_request(exception):
 """
 admin_views.register_urls(app)
 student_views.register_urls(app)
+teacher_views.register_urls(app)
 
 
 """

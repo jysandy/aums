@@ -12,6 +12,7 @@ def home():
     check_login()
     return render_template('student/home.html', student_attendance_list = get_course_wise_att(flask.g.db, flask.request.form), student_name = get_student_name(flask.g.db, flask.request.form))
 
+
 """
 ******************************************************
 ~UTILITY
@@ -33,4 +34,4 @@ def get_student_name(db, form):
 	return q
 
 def get_course_wise_att(db, form):
-	return rows_to_stringdicts(db.execute('select * from simple_attendance where rno=?', [flask.session.get('rno')]))
+	return rows_to_stringdicts(db.execute('select * from simple_attendance where rno=?', [flask.session['rno']]))

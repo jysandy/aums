@@ -10,14 +10,15 @@ from util import rows_to_stringdicts
 ******************************************************
 """
 def home():
-    check_login()
-    return render_template('teacher/home.html')
-
-def view_course_list():
 	"""
 	List of courses which the logged in teacher has registered for.
 	"""
+    check_login()
+    return render_template('teacher/home.html', teacher_course_list = get_course_list(flask.g.db, flask.request.form))
+
+def view_course_list():
 	check_login()
+	render_template('teacher/home.html', teacher_courseno_list = get_course_list(flask.g.db, flask.request.form))
 
 
 """
@@ -36,7 +37,11 @@ def redirect_to_home():
 def register_urls(app):
 	app.add_url_rule('/teacher/home/', 'teacher_home', home)
 
-	app.add_url_rule('/teacher/list/course/', 'view_course_list', view_course_list)
-
-def get_course_list():
-	return rows_to_stringdicts(db.execute('select * from attendace_course where teacherid=?', [flask.session.get('teacherid')]))
+def get_course_list(db):
+	query = """select coursename, branch, semester, section from class
+	inner join attendance_course
+	on class.classid=attendance_course.classid
+	inner join course
+	on course.courseno=attendance_course.courseno
+	where attendance_course.teacherid=?"""
+	return rows_to_stringdicts(db.execute(query, [flask.session.get('teacherid')]))

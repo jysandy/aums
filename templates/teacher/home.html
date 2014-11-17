@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+<title>
+	Teacher Home 
+</title>
+<body>
+	This is teacher home
+	<table>
+		{% if teacher_course_list|length > 0 %}
+		<tr>
+			<th>Course Code</th>
+			<th>Course Name</th>
+		</tr>
+		{% endif %}
+		{% for row in teacher_course_list %}
+		<tr>
+			<td>{{ row.courseno }}</td>
+			<td>{{ row.coursename }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	<br>
+	<br>
+	<a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
