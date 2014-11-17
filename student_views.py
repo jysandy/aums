@@ -8,7 +8,6 @@ from util import rows_to_stringdicts
 ~VIEWS
 ******************************************************
 """
-
 def home():
     check_login()
     return render_template('student/home.html', student_attendance_list = get_course_wise_att(flask.g.db, flask.request.form), student_name = get_student_name(flask.g.db, flask.request.form))
@@ -21,7 +20,6 @@ def home():
 def check_login():
 	if not flask.session.get('rno'):
 		flask.abort(401)
-	pass
 
 def redirect_to_home():
 	check_login()
