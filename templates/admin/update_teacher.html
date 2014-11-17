@@ -10,6 +10,13 @@
 	<input type="hidden" value="{{ teacher_info.teacherid }}" name="teacherid">
 	
 	<div class="form-group">
+		<label class="control-label">Teacher ID:</label>
+		<div class="form-control-static">
+			{{ teacher_info.teacherid }}
+		</div>
+	</div>
+
+	<div class="form-group">
 		<label for="name">Name:</label>
 		<input type="text" value="{{ teacher_info.name }}" name="name" id="name" class="form-control" >
 	</div>
