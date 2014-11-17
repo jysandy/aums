@@ -10,7 +10,7 @@ from util import rows_to_stringdicts
 """
 def home():
     check_login()
-    return render_template('student/home.html', student_attendance_list = get_course_wise_att(flask.g.db, flask.request.form), student_name = get_student_name(flask.g.db, flask.request.form))
+    return render_template('student/home.html', student_attendance_list = get_course_wise_att(flask.g.db), student_name = get_student_name(flask.g.db))
 
 """
 ******************************************************
@@ -28,9 +28,9 @@ def redirect_to_home():
 def register_urls(app):
 	app.add_url_rule('/student/home/', 'student_home', home)
 
-def get_student_name(db, form):
+def get_student_name(db):
 	q = rows_to_stringdicts(db.execute('select name from student where rno=?', [flask.session.get('rno')]))
-	return q
+	return q[0]['name']
 
-def get_course_wise_att(db, form):
+def get_course_wise_att(db):
 	return rows_to_stringdicts(db.execute('select * from simple_attendance where rno=?', [flask.session.get('rno')]))
