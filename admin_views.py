@@ -276,11 +276,12 @@ def run_delete_item_sql(db, form):
 
 def insert_att_student_sql(db):
 	statement = """insert into att_student (aid, rno) 
-				select attendance_course.aid, student.rno 
-				from (attendance_course inner join student 
-				on attendance_course.classid=student.classid) 
-				where not aid in (select aid from att_student)
-				and not rno in (select rno from att_student);"""
+				select attendance_course.aid, student.rno
+                from attendance_course, student
+                where attendance_course.classid=student.classid
+                and not exists (select aid, rno from att_student where
+				aid=attendance_course.aid
+				and rno=student.rno)"""
 
 	db.execute(statement)
 	statement = "update att_student set attended=0 where attended is null"

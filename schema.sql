@@ -52,3 +52,4 @@ create view simple_attendance as
 	on attendance_course.courseno=course.courseno
 	inner join att_student
 	on attendance_course.aid=att_student.aid
+	where student.rno=att_student.rno
