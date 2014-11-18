@@ -13,12 +13,8 @@ def home():
 	"""
 	List of courses which the logged in teacher has registered for.
 	"""
-    check_login()
-    return render_template('teacher/home.html', teacher_course_list = get_course_list(flask.g.db, flask.request.form))
-
-def view_course_list():
 	check_login()
-	render_template('teacher/home.html', teacher_courseno_list = get_course_list(flask.g.db, flask.request.form))
+	return render_template('teacher/home.html', teacher_course_list = get_course_list(flask.g.db))
 
 
 """

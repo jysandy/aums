@@ -4,18 +4,22 @@
 	Teacher Home 
 </title>
 <body>
-	This is teacher home
+	This is teacher home. These are the courses you have registered for.
 	<table>
 		{% if teacher_course_list|length > 0 %}
 		<tr>
-			<th>Course Code</th>
 			<th>Course Name</th>
+			<th>Semester</th>
+			<th>Branch</th>
+			<th>Section</th>
 		</tr>
 		{% endif %}
 		{% for row in teacher_course_list %}
 		<tr>
-			<td>{{ row.courseno }}</td>
 			<td>{{ row.coursename }}</td>
+			<td>{{ row.semester }}</td>
+			<td>{{ row.branch }}</td>
+			<td>{{ row.section }}</td>
 		</tr>
 		{% endfor %}
 	</table>
