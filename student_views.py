@@ -30,10 +30,9 @@ def register_urls(app):
 	app.add_url_rule('/student/home/', 'student_home', home)
 
 def get_student_name(db):
-	q = rows_to_stringdicts(db.execute('select name from student where rno=?', [flask.session.get('rno')]))
-	return q[0]['name']
+	stud_name = rows_to_stringdicts(db.execute('select name from student where rno=?', [flask.session.get('rno')]))
+	return stud_name[0]['name']
 
 
 def get_course_wise_att(db):
 	return rows_to_stringdicts(db.execute('select * from simple_attendance where rno=?', [flask.session.get('rno')]))
-
