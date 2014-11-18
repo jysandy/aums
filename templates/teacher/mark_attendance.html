@@ -1,6 +1,26 @@
 <!DOCTYPE HTML>
 <html>
 	<body>
-		Mark attendace page
+		Mark attendace page. This is where the list of students is displayed
+		<form action="confirm_attendance.html" method=post>
+			<table>
+				<thead>
+					{% if student_list|length > 0 %}
+					<tr>
+						<th>Student Name</th>
+						<th>Attended/Not attended</th>
+					</tr>
+					{% endif %}
+				</thead>
+				<tbody>
+					{% for row in student_list %}
+					<tr>
+						<td>{{ row.name }}</td>
+						<td><input type="checkbox" name="attendance" value="<aid>"></td>
+					</tr>
+				</tbody>
+			</table>
+			<input type="submit" value="Submit">
+		</form>
 	</body>
 </html>
