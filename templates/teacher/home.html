@@ -6,22 +6,32 @@
 <body>
 	This is teacher home. These are the courses you have registered for.
 	<table>
-		{% if teacher_course_list|length > 0 %}
-		<tr>
-			<th>Course Name</th>
-			<th>Semester</th>
-			<th>Branch</th>
-			<th>Section</th>
-		</tr>
+		<thead>
+			{% if teacher_course_list|length > 0 %}
+			<tr>
+				<th>Course Name</th>
+				<th>Semester</th>
+				<th>Branch</th>
+				<th>Section</th>
+				<th></th>
+			</tr>
+		</thead>
 		{% endif %}
-		{% for row in teacher_course_list %}
-		<tr>
-			<td>{{ row.coursename }}</td>
-			<td>{{ row.semester }}</td>
-			<td>{{ row.branch }}</td>
-			<td>{{ row.section }}</td>
-		</tr>
-		{% endfor %}
+		<tbody>
+			{% for row in teacher_course_list %}
+			<tr>
+				<td>{{ row.coursename }}</td>
+				<td>{{ row.semester }}</td>
+				<td>{{ row.branch }}</td>
+				<td>{{ row.section }}</td>
+				<td>
+					<a href="{{ url_for('teacher_class_update', aid=teacher_course_list.aid) }}">
+						<span class="glyphicon glyphicon-pencil"></span> Update
+					</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
 	</table>
 	<br>
 	<br>
